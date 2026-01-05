@@ -15,3 +15,6 @@ To build, run `make`. If you want to use more cores, just run it with the `-j<nu
 ### Installation
 
 To install, just run `make install`, using `sudo` where necessary. It will automatically install the binary and manpages.
+
+### License
+This project is licensed under the GNU General Public License v3.0 (GPLv3). All past and future versions of `genignore` are covered by this license. See the LICENSE file for full details.
