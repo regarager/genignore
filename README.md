@@ -10,12 +10,8 @@ For a full list of templates, see `list.go`.
 
 To setup the project for development, simply run `git clone https://github.com/regarager/genignore`.
 
-To build, run `go build`. To build manpages, you can do `make man`, which builds the manpages.
+To build, run `make`. If you want to use more cores, just run it with the `-j<numberOfCores>` flag.
 
 ### Installation
 
-To install the file, run `go install [directory]`. If `directory` is left blank, it will be installed into `$GOPATH/bin` (probably).
-
-Alternatively, you can move your binary to your desired directory in your PATH.
-
-The manpage needs to go in the corresponding prefix's `share/man/man1` if you built it.
+To install, just run `make install`, using `sudo` where necessary. It will automatically install the binary and manpages.
