@@ -26,7 +26,6 @@ install: create-prefix install-bin install-man
 
 clean:
 	rm -rf $(OBJS)
-	rm -rf $(MAN)
 
 all: $(OBJS) $(MAN)
 
