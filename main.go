@@ -140,6 +140,29 @@ func copyFile(src, dst string) error {
 	return nil
 }
 
+var version = "1.0.0"
+
+func help() {
+	helpText := `genignore - A utility for setting up .gitignores
+
+Usage:
+	genignore [template]
+
+Examples:
+	genignore Go
+	genignore Python
+	genignore Node
+
+Available Templates:
+`
+	files := getFiles()
+
+	for _, file := range files {
+		helpText += " - " + file + "\n"
+	}
+	fmt.Println(helpText)
+}
+
 func main() {
 	configDir, err := os.UserConfigDir()
 
@@ -158,11 +181,22 @@ func main() {
 	args := os.Args[1:]
 
 	if len(args) == 0 {
-		fmt.Println("No argument provided, help menu coming soon!")
-		os.Exit(0)
+		fmt.Println("Incorrect usage: No template specified.")
+		help()
+		os.Exit(1)
 	}
 
 	template := args[0]
+
+	if template == "help" || template == "--help" || template == "-h" {
+		help()
+		os.Exit(0)
+	} else if template == "version" || template == "--version" || template == "-v" {
+		fmt.Println("genignore, version " + version)
+		fmt.Println("(C) 2023-2026 Redger Xu (@regarager)")
+		fmt.Println("(C) 2025 Matthew Yang (@matthewyang204)")
+		os.Exit(0)
+	}
 
 	files := getFiles()
 	actual := caseBlindBinSearch(files, template)
