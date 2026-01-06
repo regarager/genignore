@@ -8,6 +8,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"strings"
+	"syscall"
 )
 
 // thanks chat gipity
@@ -140,6 +141,38 @@ func copyFile(src, dst string) error {
 	return nil
 }
 
+func restart() {
+	fmt.Println("Restarting program...")
+	exePath, err := os.Executable()
+	if err != nil {
+		fmt.Printf("Error while restarting: %s\n", err)
+		return
+	}
+
+	err = syscall.Exec(
+		exePath,
+		[]string{exePath, "version"},
+		os.Environ(),
+	)
+	fmt.Println("Error while restarting:", err)
+	os.Exit(1)
+}
+
+func update() {
+	fmt.Println("Updating template store...")
+	configDir, err := os.UserConfigDir()
+
+	fmt.Println("Clearing template store...")
+	err = os.RemoveAll(configDir)
+	if err != nil {
+		fmt.Println("Failed to remove config dir:", err)
+		os.Exit(1)
+	}
+
+	fmt.Println("We need to restart the program in order to re-populate template store...")
+	restart()
+}
+
 var version = "1.0.0"
 
 func help() {
@@ -195,6 +228,9 @@ func main() {
 		fmt.Println("genignore, version " + version)
 		fmt.Println("(C) 2023-2026 Redger Xu (@regarager)")
 		fmt.Println("(C) 2025 Matthew Yang (@matthewyang204)")
+		os.Exit(0)
+	} else if template == "update" || template == "--update" || template == "-u" {
+		update()
 		os.Exit(0)
 	}
 
