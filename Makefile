@@ -11,11 +11,15 @@ MAN = genignore.1
 
 OBJS = genignore
 
-install-bin: $(OBJS)
+install-bin: $(PREFIX)/bin $(OBJS)
 	cp genignore $(PREFIX)/bin/
 
-install-man: $(MAN)
+install-man: $(PREFIX)/share/man/man1 $(MAN)
 	cp genignore.1 $(PREFIX)/share/man/man1/
+
+$(PREFIX)/bin: create-prefix
+
+$(PREFIX)/share/man/man1: create-prefix
 
 create-prefix:
 	mkdir -p $(PREFIX)
