@@ -2,11 +2,16 @@ package main
 
 import (
     "os"
+	"fmt"
 )
 
 func appendToFile(filepath, destfile string) {
     srcContent, err := os.ReadFile(filepath)
     if err != nil {
+		if os.IsNotExist(err) {
+			fmt.Println("File to append does not exist!")
+			return err
+		}
         panic(err)
     }
 

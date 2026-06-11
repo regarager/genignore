@@ -263,8 +263,12 @@ func main() {
 
 		if *extendFlag != "" {
 			fmt.Printf("Appending %s to .gitignore...\n", *extendFlag)
-			appendToFile(*extendFlag, fname)
-			fmt.Println("Appended!")
+			err = appendToFile(*extendFlag, fname)
+			if err != nil {
+				fmt.Printf("Errors occured while appending file!")
+			} else {
+				fmt.Println("Appended!")
+			}
 		}
 	} else {
 		fmt.Printf("A .gitignore file for %s was not found :(\n", template)
