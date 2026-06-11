@@ -122,21 +122,26 @@ func download(configDir string) {
 }
 
 // thanks chat gipity
-func copyFile(src, dst string) error {
+func copyFile(src, dst string, extend bool) error {
 	sourceFile, err := os.Open(src)
 	if err != nil {
 		return fmt.Errorf("failed to open source file: %w", err)
 	}
 	defer sourceFile.Close()
 
-	destinationFile, err := os.Create(dst)
-	if err != nil {
-		return fmt.Errorf("failed to create destination file: %w", err)
-	}
-	defer destinationFile.Close()
-
-	if _, err := io.Copy(destinationFile, sourceFile); err != nil {
-		return fmt.Errorf("failed to copy file content: %w", err)
+	if extend && fileExists(dst) {
+		fmt.Printf("%s already exists, appending instead of overwriting...\n", dst)
+		return appendToFile(src, dst)
+	} else {
+		fmt.Printf("Creating new .gitignore at %s...\n", dst)
+		destinationFile, err := os.Create(dst)
+		if err != nil {
+			return fmt.Errorf("failed to create destination file: %w", err)
+		}
+		defer destinationFile.Close()
+		if _, err := io.Copy(destinationFile, sourceFile); err != nil {
+			return fmt.Errorf("failed to copy file content: %w", err)
+		}
 	}
 
 	return nil
@@ -213,7 +218,7 @@ func main() {
 	}
 
 	appendFlag := flag.StringP("append", "a", "", ".gitignore template to be appended to the generated .gitignore")
-
+	extendFlag := flag.Bool("extend", false, "Extend the existing .gitignore")
 
 	args := os.Args[1:]
 	flag.Parse()
@@ -254,7 +259,7 @@ func main() {
 
 		fmt.Printf("Found %s, copying to %s...\n", files[actual], fname)
 
-		err = copyFile(configDir+"/"+files[actual]+".gitignore", fname)
+		err = copyFile(configDir+"/"+files[actual]+".gitignore", fname, *extendFlag)
 
 		if err != nil {
 			fmt.Printf("Error while copying file: %s\n", err)
