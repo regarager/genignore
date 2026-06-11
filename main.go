@@ -221,7 +221,6 @@ func main() {
 	extendFlag := flag.Bool("extend", false, "Extend the existing .gitignore")
 
 	args := os.Args[1:]
-	flag.Parse()
 
 	if len(args) == 0 {
 		fmt.Println("Incorrect usage: No template specified.")
@@ -244,6 +243,7 @@ func main() {
 		os.Exit(0)
 	}
 
+	flag.Parse()
 	files := getFiles()
 	actual := caseBlindBinSearch(files, template)
 
