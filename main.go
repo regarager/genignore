@@ -10,6 +10,7 @@ import (
 	"strings"
 	"syscall"
 )
+import flag "github.com/spf13/pflag"
 
 // thanks chat gipity
 func caseBlindBinSearch(arr []string, target string) int {
@@ -211,7 +212,10 @@ func main() {
 		setup(configDir)
 	}
 
+	extendFlag := flag.StringP("extend", "e", "", "file to append")
+
 	args := os.Args[1:]
+	flag.Parse()
 
 	if len(args) == 0 {
 		fmt.Println("Incorrect usage: No template specified.")
@@ -255,6 +259,12 @@ func main() {
 			fmt.Printf("Error while copying file: %s\n", err)
 		} else {
 			fmt.Println("Copied!")
+		}
+
+		if *extendFlag != "" {
+			fmt.Printf("Appending %s to .gitignore...\n", *extendFlag)
+			appendToFile(*extendFlag, fname)
+			fmt.Println("Appended!")
 		}
 	} else {
 		fmt.Printf("A .gitignore file for %s was not found :(\n", template)
