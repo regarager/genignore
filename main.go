@@ -212,7 +212,7 @@ func main() {
 		setup(configDir)
 	}
 
-	extendFlag := flag.StringP("extend", "e", "", "file to append")
+	extendFlag := flag.StringP("extend", "e", "", ".gitignore template to be appended to the generated .gitignore")
 
 	args := os.Args[1:]
 	flag.Parse()
