@@ -212,7 +212,8 @@ func main() {
 		setup(configDir)
 	}
 
-	extendFlag := flag.StringP("extend", "e", "", ".gitignore template to be appended to the generated .gitignore")
+	appendFlag := flag.StringP("append", "a", "", ".gitignore template to be appended to the generated .gitignore")
+
 
 	args := os.Args[1:]
 	flag.Parse()
@@ -261,9 +262,9 @@ func main() {
 			fmt.Println("Copied!")
 		}
 
-		if *extendFlag != "" {
-			fmt.Printf("Appending %s to .gitignore...\n", *extendFlag)
-			err = appendToFile(*extendFlag, fname)
+		if *appendFlag != "" {
+			fmt.Printf("Appending %s to .gitignore...\n", *appendFlag)
+			err = appendToFile(*appendFlag, fname)
 			if err != nil {
 				fmt.Println("Errors occured while appending file!")
 			} else {
