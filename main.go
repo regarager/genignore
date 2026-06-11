@@ -221,6 +221,7 @@ func main() {
 
 	appendFlag := flag.StringP("append", "a", "", ".gitignore template to be appended to the generated .gitignore")
 	extendFlag := flag.Bool("extend", false, "Extend the existing .gitignore")
+	outputFlag := flag.StringP("output", "o", "", "Output file for the generated .gitignore (defaults to .gitignore in current directory)")
 
 	args := os.Args[1:]
 
@@ -257,7 +258,12 @@ func main() {
 			os.Exit(1)
 		}
 
-		fname := cwd + "/.gitignore"
+		fname := ""
+		if *outputFlag == "" {
+			fname = cwd + "/.gitignore"
+		} else {
+			fname = *outputFlag
+		}
 
 		fmt.Printf("Found %s, copying to %s...\n", files[actual], fname)
 
