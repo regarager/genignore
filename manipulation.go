@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-func appendToFile(filepath, destfile string) {
+func appendToFile(filepath, destfile string) error {
     srcContent, err := os.ReadFile(filepath)
     if err != nil {
 		if os.IsNotExist(err) {
@@ -25,4 +25,6 @@ func appendToFile(filepath, destfile string) {
     if err != nil {
         panic(err)
     }
+
+	return nil
 }
