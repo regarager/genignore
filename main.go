@@ -101,11 +101,11 @@ func setup(configDir string) {
 	fmt.Println("Finished setting up!")
 }
 
-func download(configDir string) {
+func download(configDir string, url string) {
 	cmd := exec.Command(
 		"git",
 		"clone",
-		"https://github.com/github/gitignore",
+		url,
 		configDir,
 	)
 
@@ -202,6 +202,8 @@ Available Templates:
 	fmt.Println(helpText)
 }
 
+var repoURL = "https://github.com/github/gitignore"
+
 func main() {
 	configDir, err := os.UserConfigDir()
 
@@ -213,7 +215,7 @@ func main() {
 	configDir += "/genignore"
 
 	if !checkSetup(configDir) {
-		download(configDir)
+		download(configDir, repoURL)
 		setup(configDir)
 	}
 
