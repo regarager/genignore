@@ -227,7 +227,7 @@ func main() {
 	} else if template == "version" || template == "--version" || template == "-v" {
 		fmt.Println("genignore, version " + version)
 		fmt.Println("(C) 2023-2026 Redger Xu (@regarager)")
-		fmt.Println("(C) 2025 Matthew Yang (@matthewyang204)")
+		fmt.Println("(C) 2025-2026 Matthew Yang (@matthewyang204)")
 		os.Exit(0)
 	} else if template == "update" || template == "--update" || template == "-u" {
 		update()
