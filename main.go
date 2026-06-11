@@ -265,7 +265,7 @@ func main() {
 			fmt.Printf("Appending %s to .gitignore...\n", *extendFlag)
 			err = appendToFile(*extendFlag, fname)
 			if err != nil {
-				fmt.Printf("Errors occured while appending file!")
+				fmt.Println("Errors occured while appending file!")
 			} else {
 				fmt.Println("Appended!")
 			}
