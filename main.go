@@ -201,7 +201,7 @@ func main() {
 	configDir, err := os.UserConfigDir()
 
 	if err != nil {
-		fmt.Println("Home folder could not be determine for configuration, exiting...")
+		fmt.Println("Home folder could not be determined for configuration, exiting...")
 		os.Exit(1)
 	}
 
