@@ -1,12 +1,11 @@
 package main
 
 import (
-    "io/ioutil"
     "os"
 )
 
 func appendToFile(filepath, destfile string) {
-    srcContent, err := ioutil.ReadFile(filepath)
+    srcContent, err := os.ReadFile(filepath)
     if err != nil {
         panic(err)
     }
