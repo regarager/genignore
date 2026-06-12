@@ -179,7 +179,7 @@ func update() {
 	restart()
 }
 
-var version = "1.0.0"
+var version = "1.1.0"
 
 func help() {
 	helpText := `genignore - A utility for setting up .gitignores
