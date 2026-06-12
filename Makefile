@@ -1,6 +1,7 @@
 PREFIX ?= /usr/local
 REPOURL ?= https://github.com/github/gitignore
-LDFLAGS=-ldflags "-X main.repourl=$(REPOURL)"
+VERSION ?= 1.1.0
+LDFLAGS=-ldflags "-X main.repoURL=$(REPOURL) -X main.version=$(VERSION)"
 
 genignore: main.go
 	go build $(LDFLAGS) -o genignore
