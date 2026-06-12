@@ -21,7 +21,8 @@
 genignore - A utility for setting up .gitignores
 .SH SYNOPSIS
 .PP
-\f[B]genignore\f[R] [\f[I]template\f[R]]
+\f[B]genignore\f[R] [template] [-h | \[en]help] [-a | \[en]append ]
+[\[en]extend | -e] [-o | \[en]output ]
 .SH DESCRIPTION
 .PP
 \f[B]genignore\f[R] generates \f[I].gitignore\f[R] files using
@@ -34,8 +35,20 @@ generated.
 Template names are case-sensitive and correspond to the internal
 template identifiers shipped with the program.
 .SH ARGUMENTS
+.IP \[bu] 2
+\f[V]-h\f[R], \f[V]--help\f[R] \[em] Show this help message and exit
+.IP \[bu] 2
+\f[V]-a\f[R], \f[V]--append <path to template>\f[R] \[em] Append the
+specified template to the generated .gitignore
+.IP \[bu] 2
+\f[V]-e\f[R], \f[V]--extend\f[R] \[em] Extend the existing .gitignore
+instead of overwriting it
+.IP \[bu] 2
+\f[V]-o\f[R], \f[V]--output <output path>\f[R] \[em] Specify an output
+file for the generated .gitignore (defaults to \f[V].gitignore\f[R] in
+the current directory)
 .TP
-\f[I]template\f[R]
+\f[V]template\f[R]
 The name of the template to generate (for example, \f[B]Go\f[R],
 \f[B]Python\f[R], \f[B]Node\f[R], \f[B]Rust\f[R]).
 .SH TEMPLATES
