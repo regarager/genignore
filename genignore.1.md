@@ -12,7 +12,10 @@ genignore - A utility for setting up .gitignores
 
 # SYNOPSIS
 
-**genignore** \[*template*\]
+**genignore** [template] [-h | --help]
+            [-a | --append <path to template>]
+            [--extend | -e]
+            [-o | --output <output path>]
 
 # DESCRIPTION
 
@@ -27,10 +30,14 @@ template identifiers shipped with the program.
 
 # ARGUMENTS
 
-*template*
+- `-h`, `--help` — Show this help message and exit
+- `-a`, `--append <path to template>` — Append the specified template to the generated .gitignore
+- `-e`, `--extend` — Extend the existing .gitignore instead of overwriting it
+- `-o`, `--output <output path>` — Specify an output file for the generated .gitignore (defaults to `.gitignore` in the current directory)
 
-:   The name of the template to generate (for example, **Go**,
-    **Python**, **Node**, **Rust**).
+`template`
+
+:   The name of the template to generate (for example, **Go**, **Python**, **Node**, **Rust**).
 
 # TEMPLATES
 
