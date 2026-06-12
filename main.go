@@ -185,7 +185,13 @@ func help() {
 	helpText := `genignore - A utility for setting up .gitignores
 
 Usage:
-	genignore [template]
+	genignore [template] [-h | --help] [-a | --append <path to template>] [--extend | -e] [-o | --output <output path>]
+
+Options:
+	-h, --help      Show this help message and exit
+	-a, --append    Append the specified template to the generated .gitignore
+	-e, --extend    Extend the existing .gitignore instead of overwriting it
+	-o, --output    Specify an output file for the generated .gitignore (defaults to .gitignore in current directory)
 
 Examples:
 	genignore Go
