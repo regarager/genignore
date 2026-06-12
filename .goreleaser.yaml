@@ -13,7 +13,7 @@ builds:
       - darwin
 
 archives:
-  - formats: [tar.gz]
+  - format: "tar.gz"
     name_template: >-
       {{ .ProjectName }}_
       {{- title .Os }}_
@@ -23,7 +23,7 @@ archives:
       {{- if .Arm }}v{{ .Arm }}{{ end }}
     format_overrides:
       - goos: windows
-        formats: [zip]
+        format: "zip"
 
 changelog:
   sort: asc
