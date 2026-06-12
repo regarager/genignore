@@ -10,6 +10,7 @@ import (
 	"strings"
 	"syscall"
 )
+import flag "github.com/spf13/pflag"
 
 // thanks chat gipity
 func caseBlindBinSearch(arr []string, target string) int {
@@ -100,11 +101,11 @@ func setup(configDir string) {
 	fmt.Println("Finished setting up!")
 }
 
-func download(configDir string) {
+func download(configDir string, url string) {
 	cmd := exec.Command(
 		"git",
 		"clone",
-		"https://github.com/github/gitignore",
+		url,
 		configDir,
 	)
 
@@ -121,21 +122,26 @@ func download(configDir string) {
 }
 
 // thanks chat gipity
-func copyFile(src, dst string) error {
+func copyFile(src, dst string, extend bool) error {
 	sourceFile, err := os.Open(src)
 	if err != nil {
 		return fmt.Errorf("failed to open source file: %w", err)
 	}
 	defer sourceFile.Close()
 
-	destinationFile, err := os.Create(dst)
-	if err != nil {
-		return fmt.Errorf("failed to create destination file: %w", err)
-	}
-	defer destinationFile.Close()
-
-	if _, err := io.Copy(destinationFile, sourceFile); err != nil {
-		return fmt.Errorf("failed to copy file content: %w", err)
+	if extend && fileExists(dst) {
+		fmt.Printf("%s already exists, appending instead of overwriting...\n", dst)
+		return appendToFile(src, dst)
+	} else {
+		fmt.Printf("Creating new .gitignore at %s...\n", dst)
+		destinationFile, err := os.Create(dst)
+		if err != nil {
+			return fmt.Errorf("failed to create destination file: %w", err)
+		}
+		defer destinationFile.Close()
+		if _, err := io.Copy(destinationFile, sourceFile); err != nil {
+			return fmt.Errorf("failed to copy file content: %w", err)
+		}
 	}
 
 	return nil
@@ -196,20 +202,25 @@ Available Templates:
 	fmt.Println(helpText)
 }
 
+var repoURL = "https://github.com/github/gitignore"
+
 func main() {
 	configDir, err := os.UserConfigDir()
 
 	if err != nil {
-		fmt.Println("Home folder could not be determine for configuration, exiting...")
+		fmt.Println("Home folder could not be determined for configuration, exiting...")
 		os.Exit(1)
 	}
 
 	configDir += "/genignore"
 
 	if !checkSetup(configDir) {
-		download(configDir)
+		download(configDir, repoURL)
 		setup(configDir)
 	}
+
+	appendFlag := flag.StringP("append", "a", "", ".gitignore template to be appended to the generated .gitignore")
+	extendFlag := flag.Bool("extend", false, "Extend the existing .gitignore")
 
 	args := os.Args[1:]
 
@@ -227,13 +238,14 @@ func main() {
 	} else if template == "version" || template == "--version" || template == "-v" {
 		fmt.Println("genignore, version " + version)
 		fmt.Println("(C) 2023-2026 Redger Xu (@regarager)")
-		fmt.Println("(C) 2025 Matthew Yang (@matthewyang204)")
+		fmt.Println("(C) 2025-2026 Matthew Yang (@matthewyang204)")
 		os.Exit(0)
 	} else if template == "update" || template == "--update" || template == "-u" {
 		update()
 		os.Exit(0)
 	}
 
+	flag.Parse()
 	files := getFiles()
 	actual := caseBlindBinSearch(files, template)
 
@@ -249,12 +261,22 @@ func main() {
 
 		fmt.Printf("Found %s, copying to %s...\n", files[actual], fname)
 
-		err = copyFile(configDir+"/"+files[actual]+".gitignore", fname)
+		err = copyFile(configDir+"/"+files[actual]+".gitignore", fname, *extendFlag)
 
 		if err != nil {
 			fmt.Printf("Error while copying file: %s\n", err)
 		} else {
 			fmt.Println("Copied!")
+		}
+
+		if *appendFlag != "" {
+			fmt.Printf("Appending %s to .gitignore...\n", *appendFlag)
+			err = appendToFile(*appendFlag, fname)
+			if err != nil {
+				fmt.Println("Errors occured while appending file!")
+			} else {
+				fmt.Println("Appended!")
+			}
 		}
 	} else {
 		fmt.Printf("A .gitignore file for %s was not found :(\n", template)

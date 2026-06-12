@@ -1,5 +1,5 @@
 # genignore
-## Utility for setting up .gitignore files
+Utility for setting up .gitignore files
 
 ### Usage
 
